@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.Features.Streamers.Commands.CreateStreamer
 {
-    public class CreateStreamerCommandHandler : IRequestHandler<UpdateStreamerCommand, int>
+    public class CreateStreamerCommandHandler : IRequestHandler<CreateStreamerCommand, int>
     {
         private readonly IAsyncRepository<Streamer> repository;
         private readonly IMapper mapper;
@@ -22,7 +22,7 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands.CreateStream
             this.emailService = emailService;
             this.logger = logger;
         }
-        public async Task<int> Handle(UpdateStreamerCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateStreamerCommand request, CancellationToken cancellationToken)
         {
             var streamerEntity = mapper.Map<Streamer>(request);
             var newStreamer = await repository.AddAsync(streamerEntity);

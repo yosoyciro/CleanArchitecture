@@ -14,11 +14,10 @@ namespace CleanArchitecture.Application.Contracts.Persistence
         Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             List<Expression<Func<T, object>>> includes = null,
-            string includeString = null,
             bool disableTracking = true);
         Task<T> GetByIdAsync (int id);
         Task<T> AddAsync(T Entity);
         Task<T> UpdateAsync(T Entity);
-        Task<T> DeleteAsync(T Entity);
+        Task DeleteAsync(T Entity);
     }
 }

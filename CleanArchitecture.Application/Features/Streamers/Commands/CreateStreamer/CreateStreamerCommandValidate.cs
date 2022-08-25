@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Features.Streamers.Commands.CreateStreamer
 {
-    public class CreateStreamerCommandValidate : AbstractValidator<UpdateStreamerCommand>
+    public class CreateStreamerCommandValidate : AbstractValidator<CreateStreamerCommand>
     {
         public CreateStreamerCommandValidate()
         {
