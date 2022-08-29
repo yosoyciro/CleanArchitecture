@@ -18,6 +18,7 @@ namespace CleanArchitecture.Infrastructure
                 opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
             );
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
             services.AddScoped<IVideoRepository, VideoRepository>();
             services.AddScoped<IStreamerRepository, StreamerRepository>();

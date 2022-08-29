@@ -84,10 +84,27 @@ namespace CleanArchitecture.Infrastructure.Repositories
 
         public async Task<T> UpdateAsync(T Entity)
         {
+            context.Set<T>().Attach(Entity);
             context.Entry(Entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
 
             return Entity;
+        }
+
+        public void AddEntity(T Entity)
+        {
+            context.Set<T>().Add(Entity);
+        }
+
+        public void DeleteEntity(T Entity)
+        {
+            context.Set<T>().Attach(Entity);
+            context.Entry(Entity).State = EntityState.Modified;
+        }
+
+        public void UpdateEntity(T Entity)
+        {
+            context.Set<T>().Remove(Entity);
         }
     }
 }

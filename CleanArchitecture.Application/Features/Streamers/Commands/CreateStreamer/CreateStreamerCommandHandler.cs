@@ -10,14 +10,14 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands.CreateStream
 {
     public class CreateStreamerCommandHandler : IRequestHandler<CreateStreamerCommand, int>
     {
-        private readonly IAsyncRepository<Streamer> repository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly IEmailService emailService;
         private readonly ILogger<CreateStreamerCommandHandler> logger;
 
-        public CreateStreamerCommandHandler(IStreamerRepository repository, IMapper mapper, IEmailService emailService, ILogger<CreateStreamerCommandHandler> logger)
+        public CreateStreamerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService, ILogger<CreateStreamerCommandHandler> logger)
         {
-            this.repository = repository;
+            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.emailService = emailService;
             this.logger = logger;
@@ -25,12 +25,21 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands.CreateStream
         public async Task<int> Handle(CreateStreamerCommand request, CancellationToken cancellationToken)
         {
             var streamerEntity = mapper.Map<Streamer>(request);
-            var newStreamer = await repository.AddAsync(streamerEntity);
-            logger.LogInformation($"Streamer {newStreamer.Id} fue creado exitosamente!");
+            //var newStreamer = await repository.AddAsync(streamerEntity);
 
-            await SendEmail(newStreamer);
+            //UoW
+            unitOfWork.StreamerRepository.AddEntity(streamerEntity);
+            var result = await unitOfWork.CommitAsync();
+            if (result <= 0)
+            {
+                throw new Exception($"No se pudo grabar el Streamer");
+            }
 
-            return newStreamer.Id;
+            logger.LogInformation($"Streamer {streamerEntity.Id} fue creado exitosamente!");
+
+            await SendEmail(streamerEntity);
+
+            return streamerEntity.Id;
         }
 
         private async Task SendEmail(Streamer streamer)

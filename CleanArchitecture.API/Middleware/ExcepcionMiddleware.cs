@@ -1,4 +1,6 @@
 ﻿using CleanArchitecture.API.Errors;
+using CleanArchitecture.Application.Exceptions;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace CleanArchitecture.API.Middleware
@@ -27,13 +29,39 @@ namespace CleanArchitecture.API.Middleware
                 logger.LogError(ex, ex.Message);
 
                 context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                var statusCode = (int)HttpStatusCode.InternalServerError;
+                var result = string.Empty;
 
-                var respoonse = env.IsDevelopment()
-                    ? new CodeErrorException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace)
-                    : new CodeErrorException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace);
+                switch (ex)
+                {
+                    case NotFoundException notFountException:
+                        statusCode = (int)HttpStatusCode.NotFound;
 
-                throw;
+                        break;
+
+                    case RequestValidationException validationException:
+                        statusCode = (int)HttpStatusCode.BadRequest;
+                        var validationJson = JsonConvert.SerializeObject(validationException.Errors);
+                        result = JsonConvert.SerializeObject(new CodeErrorException(statusCode, ex.Message, validationJson));
+
+                        break;
+
+                    case BadRequestException badRequestException:
+                        statusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                if (string.IsNullOrEmpty(result))
+                {
+                    result = JsonConvert.SerializeObject(new CodeErrorException(statusCode, ex.Message, ex.StackTrace));
+                }
+
+                context.Response.StatusCode = statusCode;
+
+                await context.Response.WriteAsync(result);
             }
         }
     }
