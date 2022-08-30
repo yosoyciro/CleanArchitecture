@@ -21,6 +21,8 @@ namespace CleanArchitecture.Infrastructure.Repositories
             this.context = context;
         }
 
+        public StreamerDbContext StreamerDbContext => context;
+
         public async Task<int> CommitAsync()
         {
             return await context.SaveChangesAsync();

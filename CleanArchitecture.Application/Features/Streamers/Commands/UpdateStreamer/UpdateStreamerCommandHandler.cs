@@ -11,9 +11,9 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands.UpdateStream
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
-        private readonly ILogger<UpdateStreamerCommand> logger;
+        private readonly ILogger<UpdateStreamerCommandHandler> logger;
 
-        public UpdateStreamerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UpdateStreamerCommand> logger)
+        public UpdateStreamerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UpdateStreamerCommandHandler> logger)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;

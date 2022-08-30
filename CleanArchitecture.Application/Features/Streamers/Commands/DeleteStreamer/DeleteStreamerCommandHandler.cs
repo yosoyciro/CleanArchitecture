@@ -5,12 +5,12 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 namespace CleanArchitecture.Application.Features.Streamers.Commands.DeleteStreamer
 {
-    internal class DeleteStreamerCommandHandler : IRequestHandler<DeleteStreamerCommand>
+    public class DeleteStreamerCommandHandler : IRequestHandler<DeleteStreamerCommand>
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly ILogger<DeleteStreamerCommand> logger;
+        private readonly ILogger<DeleteStreamerCommandHandler> logger;
 
-        public DeleteStreamerCommandHandler(IUnitOfWork unitOfWork, ILogger<DeleteStreamerCommand> logger)
+        public DeleteStreamerCommandHandler(IUnitOfWork unitOfWork, ILogger<DeleteStreamerCommandHandler> logger)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
