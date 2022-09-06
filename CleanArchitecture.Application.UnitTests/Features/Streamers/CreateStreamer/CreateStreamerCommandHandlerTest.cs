@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Contracts.Infrastructure;
 using CleanArchitecture.Application.Features.Streamers.Commands.CreateStreamer;
+using CleanArchitecture.Application.Features.Streamers.Commands.UpdateStreamer;
 using CleanArchitecture.Application.Mappings;
 using CleanArchitecture.Application.UnitTests.Mocks;
 using CleanArchitecture.Infrastructure.Repositories;
@@ -46,22 +47,6 @@ namespace CleanArchitecture.Application.UnitTests.Features.Streamers.CreateStrea
 
             result.ShouldBeOfType<int>();
             result.ShouldBeGreaterThan(0);
-        }
-
-        //[Fact]
-        //public async Task CreateStreamerCommand_InputStreamer_ReturnsError()
-        //{
-        //    var streamerInput = new CreateStreamerCommand
-        //    {
-        //        Nombre = "",
-        //        Url = "empty"
-        //    };
-
-        //    var handler = new CreateStreamerCommandHandler(unitOfWork.Object, mapper, emailService.Object, logger.Object);
-        //    var result = await handler.Handle(streamerInput, CancellationToken.None);
-
-        //    result.ShouldBeOfType<int>();
-        //    result.ShouldBe(0);
-        //}
+        }        
     }
 }
