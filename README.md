@@ -9,4 +9,4 @@ Patornes utilizados:
 - Repository
 - Unit of work
 - Mediator
-- CRRS
+- CQRS
